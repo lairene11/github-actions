@@ -26,7 +26,9 @@ jobs:
         run: find dist/assets/*.js -type f -execdure echo 'script-file={}' >> $GITHUB_OUTPUT';'        
       - name: Run tests
         run: npm test
+        id: run-tests
       - name: upload artifacts
+        if: failure() && ${{ steps.run-tests.outcome == 'failure' }}
         uses: actions/upload-artifact@v3
         with:
           name: my-dist-files
