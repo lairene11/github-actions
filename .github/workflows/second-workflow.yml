@@ -46,6 +46,7 @@ jobs:
         with:
           name: my-dist-files
       - name: list files
+        continue-on-error: true
         run: ls
       - name: Output filename
         run: echo "${{ needs.first-test.outputs.script-file }}"
