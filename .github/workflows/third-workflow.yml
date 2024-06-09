@@ -1,0 +1,12 @@
+name: Env Variables
+on: workflow_dispatch
+env:
+  MONGO_DB_NAME: my-test-db
+jobs:
+  test:
+    env:
+      RETRY_COUNT: 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: output
+        run: echo "hey"
