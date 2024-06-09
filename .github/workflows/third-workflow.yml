@@ -2,6 +2,8 @@ name: Env Variables
 on: workflow_dispatch
 env:
   MONGO_DB_NAME: my-test-db
+  MONGO_DB_USERNAME: test-user
+  MONGO_DB_PASSWORD: password
 jobs:
   test:
     env:
@@ -9,4 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: output
-        run: echo "hey"
+        run: |
+          echo "$MONGO_DB_NAME"
+          echo "Mongo username: ${{ env.MONGO_DB_USERNAME}}"
+        
+        
