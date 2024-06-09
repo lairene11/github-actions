@@ -21,6 +21,13 @@ jobs:
           path: |
             package.json
             dist          
+  deploy-new:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: my-dist-files
   deploy:
     needs: first-test
     runs-on: ubuntu-latest
