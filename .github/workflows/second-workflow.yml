@@ -3,6 +3,8 @@ on: [push, workflow_dispatch]
 jobs:
   first-test:
     runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish-file-name.outputs.script-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -12,6 +14,11 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci
+      - name: build project
+        run: npm run build
+      - name: Publish JS filename
+        id: publish-file-name
+        run: find dist/assets/*.js -type f -execdure echo 'script-file={}' >> $GITHUB_OUTPUT';'        
       - name: Run tests
         run: npm test
       - name: upload artifacts
@@ -22,12 +29,17 @@ jobs:
             package.json
             dist          
   deploy-new:
+    needs: first-test
     runs-on: ubuntu-latest
     steps:
       - name: Get build artifacts
         uses: actions/download-artifact@v3
         with:
           name: my-dist-files
+      - name: list files
+        run: ls
+      - name: Output filename
+        run: echo "${{ needs.first-test.outputs.script-file }}"
   deploy:
     needs: first-test
     runs-on: ubuntu-latest
