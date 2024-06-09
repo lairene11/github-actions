@@ -3,11 +3,13 @@ on: workflow_dispatch
 env:
   MONGO_DB_NAME: my-test-db
   MONGO_DB_USERNAME: test-user
-  MONGO_DB_PASSWORD: password
+  MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD}}
 jobs:
   test:
+    environment: qa
     env:
       RETRY_COUNT: 3
+      MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD}}
     runs-on: ubuntu-latest
     steps:
       - name: output
