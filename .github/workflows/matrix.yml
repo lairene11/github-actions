@@ -1,0 +1,21 @@
+name: matrix test
+on: workflow_dispatch
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: [12, 14, 16]
+        operating-systmens: [ubuntu-latest, window-latest]
+    runs-on: $ {{ matrix.operationg-system }}
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: dependencies
+        run: npm ci
+      - name: build project
+        run: npm run build
+  
