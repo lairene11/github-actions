@@ -4,6 +4,20 @@ on:
   pull_request:
     types:
       - opened
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - 'dev-*'
+    branches-ignore:
+      - 'test/**'
+    tags:
+      - front-end
+    paths:
+      - '.src/**'
+    paths-ignore:
+      - '.github/workflows/*'    
 jobs:
   first-job:
     runs-on: ubuntu-latest
