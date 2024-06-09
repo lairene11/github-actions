@@ -1,5 +1,5 @@
 name: Run Tests
-on: [push, workflow_dispatch]
+on: workflow_dispatch
 jobs:
   first-test:
     runs-on: ubuntu-latest
@@ -13,11 +13,13 @@ jobs:
         with:
           node-version: 18
       - name: Cache dependencies
+        id: my-cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: desp-node-modules-${{ hashFiles('packages-lock.json') }}
       - name: Install dependencies
+        if: steps.my-cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: build project
         run: npm run build
@@ -63,6 +65,15 @@ jobs:
         run: npm run build
       - name: Deploy
         run: echo "Deploying"
+  report:
+    needs: [first-test, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output info
+        run: |
+          echo "${{ github}}"
+    
       
     
 
